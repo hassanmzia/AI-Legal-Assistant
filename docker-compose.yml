@@ -115,7 +115,7 @@ services:
       redis:
         condition: service_healthy
       backend:
-        condition: service_started
+        condition: service_healthy
     networks:
       - legal_network
 
@@ -140,7 +140,7 @@ services:
       redis:
         condition: service_healthy
       backend:
-        condition: service_started
+        condition: service_healthy
     networks:
       - legal_network
 
@@ -163,7 +163,7 @@ services:
       - NODE_ENV=production
     depends_on:
       backend:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
     healthcheck:
@@ -187,7 +187,7 @@ services:
       - REACT_APP_ORCHESTRATOR_URL=http://172.168.1.95:3057
     depends_on:
       backend:
-        condition: service_started
+        condition: service_healthy
       orchestrator:
         condition: service_started
     networks:
