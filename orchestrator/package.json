@@ -1,0 +1,33 @@
+{
+  "name": "legal-assistant-orchestrator",
+  "version": "1.0.0",
+  "description": "MCP + A2A orchestrator for AI Legal Assistant multi-agent system",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "ws": "^8.18.0",
+    "axios": "^1.7.9",
+    "ioredis": "^5.4.2",
+    "uuid": "^11.0.3",
+    "dotenv": "^16.4.7",
+    "winston": "^3.17.0",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/express": "^5.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/ws": "^8.5.13",
+    "@types/node": "^22.10.2",
+    "@types/uuid": "^10.0.0",
+    "@types/jsonwebtoken": "^9.0.7"
+  }
+}
