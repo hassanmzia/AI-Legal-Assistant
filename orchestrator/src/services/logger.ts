@@ -1,6 +1,17 @@
 import winston from 'winston';
 import path from 'path';
 
+function safeStringify(obj: any): string {
+  const seen = new WeakSet();
+  return JSON.stringify(obj, (_key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) return '[Circular]';
+      seen.add(value);
+    }
+    return value;
+  });
+}
+
 const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.errors({ stack: true }),
@@ -10,7 +21,11 @@ const logFormat = winston.format.combine(
       log += `\n${stack}`;
     }
     if (Object.keys(meta).length > 0) {
-      log += ` ${JSON.stringify(meta)}`;
+      try {
+        log += ` ${safeStringify(meta)}`;
+      } catch {
+        log += ' [unserializable meta]';
+      }
     }
     return log;
   })

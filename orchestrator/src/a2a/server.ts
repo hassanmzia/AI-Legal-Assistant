@@ -29,7 +29,7 @@ export class A2AServer {
         name: 'Legal Analysis Agent',
         description: 'Comprehensive legal case analysis with ReAct pattern',
         capabilities: ['case_analysis', 'full_analysis', 'legal_research'],
-        endpoint: `${BACKEND_URL}/api/analysis/`,
+        endpoint: `${BACKEND_URL}/api/analyses/`,
         status: 'online',
         tools: ['rag_search_tool', 'tavily_web_search_tool', 'analyze_loopholes_tool', 'risk_assessment_tool'],
       },
@@ -38,7 +38,7 @@ export class A2AServer {
         name: 'Legal Research Agent',
         description: 'Searches precedents and legal databases',
         capabilities: ['precedent_search', 'legal_research', 'web_search'],
-        endpoint: `${BACKEND_URL}/api/analysis/`,
+        endpoint: `${BACKEND_URL}/api/analyses/`,
         status: 'online',
         tools: ['rag_search_tool', 'tavily_web_search_tool'],
       },
@@ -47,7 +47,7 @@ export class A2AServer {
         name: 'Loophole Detection Agent',
         description: 'Identifies legal loopholes and weaknesses',
         capabilities: ['loophole_detection', 'weakness_analysis'],
-        endpoint: `${BACKEND_URL}/api/analysis/`,
+        endpoint: `${BACKEND_URL}/api/analyses/`,
         status: 'online',
         tools: ['analyze_loopholes_tool', 'rag_search_tool'],
       },
@@ -56,7 +56,7 @@ export class A2AServer {
         name: 'Risk Assessment Agent',
         description: 'Evaluates legal risks and outcome probabilities',
         capabilities: ['risk_assessment', 'probability_estimation'],
-        endpoint: `${BACKEND_URL}/api/analysis/`,
+        endpoint: `${BACKEND_URL}/api/analyses/`,
         status: 'online',
         tools: ['risk_assessment_tool'],
       },
@@ -65,7 +65,7 @@ export class A2AServer {
         name: 'Contract Review Agent',
         description: 'Reviews contracts for issues and compliance',
         capabilities: ['contract_review', 'compliance_check'],
-        endpoint: `${BACKEND_URL}/api/analysis/`,
+        endpoint: `${BACKEND_URL}/api/analyses/`,
         status: 'online',
         tools: ['contract_review_tool', 'compliance_check_tool'],
       },
@@ -197,10 +197,10 @@ export class A2AServer {
 
       logger.info(`Processing task ${task.id} with agent ${agent.name}`);
 
-      const response = await axios.post(`${BACKEND_URL}/api/analysis/`, {
+      const response = await axios.post(`${BACKEND_URL}/api/analyses/`, {
         case_id: task.input.caseId,
-        analysis_type: task.type,
-        case_text: task.input.caseText,
+        analysis_type: task.type || 'full_analysis',
+        input_text: task.input.caseText || task.input.text || task.input,
       });
 
       task.result = response.data;
@@ -211,8 +211,8 @@ export class A2AServer {
       logger.info(`Task ${task.id} completed successfully`);
     } catch (error: any) {
       task.status = 'failed';
-      task.error = error.message;
-      logger.error(`Task ${task.id} failed`, error);
+      task.error = error.response?.data?.error || error.message;
+      logger.error(`Task ${task.id} failed: ${task.error}`);
     }
   }
 
@@ -237,7 +237,7 @@ export class A2AServer {
           payload.case_text = caseText;
         }
 
-        const response = await axios.post(`${BACKEND_URL}/api/analysis/`, payload);
+        const response = await axios.post(`${BACKEND_URL}/api/analyses/`, payload);
         results[type] = response.data;
       } catch (error: any) {
         logger.error(`Analysis type ${type} failed`, error);
