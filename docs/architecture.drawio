@@ -1,0 +1,364 @@
+<mxfile host="app.diagrams.net" modified="2026-01-31T00:00:00.000Z" agent="Draw.io" version="24.0.0" type="device">
+  <diagram id="arch-diagram" name="AI Legal Assistant - Technical Architecture">
+    <mxGraphModel dx="2800" dy="2200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="3300" pageHeight="2400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ============================================================ -->
+        <!-- TITLE                                                        -->
+        <!-- ============================================================ -->
+        <mxCell id="title" value="AI Legal Assistant — Technical Architecture" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="760" y="20" width="620" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- EXTERNAL USERS                                               -->
+        <!-- ============================================================ -->
+        <mxCell id="users-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="870" y="80" width="400" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="users-label" value="External Users" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="85" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="&lt;b&gt;Browser&lt;/b&gt;&lt;br&gt;http://172.168.1.95:3048" style="shape=mxgraph.cisco.users.mobile_user;html=1;sketch=0;fillColor=#999999;strokeColor=#666666;fontColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="110" width="100" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- INFRASTRUCTURE — NGINX (Gray)                                -->
+        <!-- ============================================================ -->
+        <mxCell id="infra-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;strokeColor=#999999;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="720" y="230" width="700" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="infra-label" value="Infrastructure" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="730" y="232" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="nginx" value="&lt;b style=&quot;font-size:13px&quot;&gt;Nginx Reverse Proxy&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:2px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 3048:80&lt;br&gt;&lt;br&gt;Routes:&lt;br&gt;/api/  →  Django Backend&lt;br&gt;/orchestrator/  →  Node.js&lt;br&gt;/ws/  →  WebSocket&lt;br&gt;/  →  React Frontend&lt;br&gt;&lt;br&gt;Rate limiting · Security headers&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;spacingTop=4;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="870" y="255" width="400" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- ARROW: Users → Nginx                                         -->
+        <!-- ============================================================ -->
+        <mxCell id="a-users-nginx" value="HTTP / WSS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;fontColor=#444444;fontSize=10;labelBackgroundColor=#FFFFFF;" edge="1" source="browser" target="nginx" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- FRONTEND GROUP (Blue)                                        -->
+        <!-- ============================================================ -->
+        <mxCell id="fe-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8FF;strokeColor=#3A7BD5;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="430" width="380" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-group-label" value="Frontend" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#3A7BD5;" vertex="1" parent="1">
+          <mxGeometry x="50" y="432" width="80" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" value="&lt;b style=&quot;font-size:14px&quot;&gt;React Frontend&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:4px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 3062:80&lt;br&gt;&lt;br&gt;React 18 + TypeScript + Tailwind CSS&lt;br&gt;&lt;br&gt;&lt;b&gt;Pages:&lt;/b&gt; Dashboard · Cases · Documents&lt;br&gt;Chat · Analysis · Agents · Clients&lt;br&gt;Billing · Settings&lt;br&gt;&lt;br&gt;&lt;b&gt;Auth:&lt;/b&gt; JWT with auto-refresh&lt;br&gt;&lt;b&gt;HTTP Client:&lt;/b&gt; Axios&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8FF;strokeColor=#3A7BD5;align=center;verticalAlign=top;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="458" width="340" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- BACKEND GROUP (Green)                                        -->
+        <!-- ============================================================ -->
+        <mxCell id="be-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5F5E3;strokeColor=#27AE60;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="480" y="430" width="440" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="be-group-label" value="Backend / API" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#27AE60;" vertex="1" parent="1">
+          <mxGeometry x="490" y="432" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="backend" value="&lt;b style=&quot;font-size:14px&quot;&gt;Django Backend API&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:4px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 8052:8000&lt;br&gt;&lt;br&gt;&lt;b&gt;Framework:&lt;/b&gt; Django REST Framework&lt;br&gt;&lt;b&gt;Auth:&lt;/b&gt; JWT + Service Key&lt;br&gt;&lt;br&gt;&lt;b&gt;Models:&lt;/b&gt; User · Client · Case&lt;br&gt;Document · ChatSession · ChatMessage&lt;br&gt;AnalysisResult · CaseTimeline&lt;br&gt;BillingEntry · AuditLog&lt;br&gt;&lt;br&gt;&lt;b&gt;LangGraph AI Agent&lt;/b&gt; (ReAct Pattern)&lt;br&gt;&lt;b&gt;MCP Server&lt;/b&gt; endpoints&lt;br&gt;&lt;b&gt;Celery&lt;/b&gt; async tasks&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5F5E3;strokeColor=#27AE60;align=center;verticalAlign=top;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="458" width="400" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- ORCHESTRATOR GROUP (Green)                                   -->
+        <!-- ============================================================ -->
+        <mxCell id="orch-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5F5E3;strokeColor=#27AE60;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="980" y="430" width="440" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="orch-group-label" value="Orchestrator" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#27AE60;" vertex="1" parent="1">
+          <mxGeometry x="990" y="432" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="orchestrator" value="&lt;b style=&quot;font-size:14px&quot;&gt;Node.js Orchestrator&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:4px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 3057:3001&lt;br&gt;&lt;br&gt;&lt;b&gt;Framework:&lt;/b&gt; Express + TypeScript&lt;br&gt;&lt;br&gt;&lt;b&gt;A2A Protocol Server&lt;/b&gt;&lt;br&gt;6 Agents: Legal Analyst · Research&lt;br&gt;Loophole Detector · Risk Assessor&lt;br&gt;Contract Reviewer · Supervisor&lt;br&gt;&lt;br&gt;&lt;b&gt;MCP Protocol Server&lt;/b&gt;&lt;br&gt;&lt;b&gt;WebSocket&lt;/b&gt; for real-time updates&lt;br&gt;&lt;b&gt;Supervisor Agent&lt;/b&gt; multi-agent orchestration&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5F5E3;strokeColor=#27AE60;align=center;verticalAlign=top;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="458" width="400" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- AI / ML GROUP (Orange) — LangGraph Agent Workflow            -->
+        <!-- ============================================================ -->
+        <mxCell id="ai-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E67E22;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="480" y="770" width="940" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ai-group-label" value="AI / ML Layer" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#E67E22;" vertex="1" parent="1">
+          <mxGeometry x="490" y="772" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="langgraph" value="&lt;b style=&quot;font-size:13px&quot;&gt;LangGraph Agent Workflow&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:3px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;StateGraph: Agent Node → Should Continue → Tools / End&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;align=center;verticalAlign=top;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="500" y="800" width="420" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Tools boxes -->
+        <mxCell id="tool-rag" value="RAG Search" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="870" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tool-tavily" value="Tavily Web Search" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="870" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tool-loophole" value="Loophole Analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="870" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tool-risk" value="Risk Assessment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="915" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tool-contract" value="Contract Review" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="630" y="915" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="tool-compliance" value="Compliance Check" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="915" width="120" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- DeepEval -->
+        <mxCell id="deepeval" value="&lt;b style=&quot;font-size:12px&quot;&gt;DeepEval Evaluation&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:2px 0&quot;&gt;&lt;span style=&quot;font-size:10px&quot;&gt;ToolCorrectness · TaskCompletion&lt;br&gt;AnswerRelevancy · ContentCoverage&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;align=center;verticalAlign=top;spacingTop=4;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="960" y="840" width="440" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- CELERY GROUP (Gray / Infrastructure)                         -->
+        <!-- ============================================================ -->
+        <mxCell id="celery-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;strokeColor=#999999;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="770" width="380" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="celery-group-label" value="Background Workers" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="50" y="772" width="140" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="celery-worker" value="&lt;b style=&quot;font-size:12px&quot;&gt;Celery Worker&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;Async document processing&lt;br&gt;Background jobs&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;strokeColor=#999999;align=center;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="800" width="170" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="celery-beat" value="&lt;b style=&quot;font-size:12px&quot;&gt;Celery Beat&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;Scheduled analysis tasks&lt;br&gt;Periodic jobs&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;strokeColor=#999999;align=center;verticalAlign=middle;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="240" y="800" width="160" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- DATA STORES GROUP (Purple)                                   -->
+        <!-- ============================================================ -->
+        <mxCell id="ds-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7F6;strokeColor=#7E57C2;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1040" width="1380" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="ds-group-label" value="Data Stores" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#7E57C2;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1042" width="100" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- PostgreSQL -->
+        <mxCell id="postgres" value="&lt;b style=&quot;font-size:13px&quot;&gt;PostgreSQL&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:3px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 5488:5432&lt;br&gt;&lt;b&gt;pgvector&lt;/b&gt; extension&lt;br&gt;All application data&lt;/span&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#D1C4E9;strokeColor=#7E57C2;align=center;verticalAlign=middle;spacingTop=2;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1075" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Redis -->
+        <mxCell id="redis" value="&lt;b style=&quot;font-size:13px&quot;&gt;Redis&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:3px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 6392:6379&lt;br&gt;db 0: Celery broker&lt;br&gt;db 1: Orchestrator pub/sub&lt;br&gt;Caching&lt;/span&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#D1C4E9;strokeColor=#7E57C2;align=center;verticalAlign=middle;spacingTop=2;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="440" y="1075" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- ChromaDB -->
+        <mxCell id="chromadb" value="&lt;b style=&quot;font-size:13px&quot;&gt;ChromaDB&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:3px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Port 8147:8000&lt;br&gt;Vector store for RAG&lt;br&gt;Legal precedent embeddings&lt;/span&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#D1C4E9;strokeColor=#7E57C2;align=center;verticalAlign=middle;spacingTop=2;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="780" y="1075" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- EXTERNAL APIs (Orange — AI/ML)                               -->
+        <!-- ============================================================ -->
+        <mxCell id="ext-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E67E22;dashed=1;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="1480" y="430" width="270" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="ext-group-label" value="External APIs" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#E67E22;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="432" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="openai" value="&lt;b style=&quot;font-size:13px&quot;&gt;OpenAI API&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:3px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;GPT-4o-mini (analysis)&lt;br&gt;text-embedding-3-small&lt;br&gt;(embeddings)&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;align=center;verticalAlign=top;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="470" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="tavily" value="&lt;b style=&quot;font-size:13px&quot;&gt;Tavily API&lt;/b&gt;&lt;br&gt;&lt;hr size=&quot;1&quot; style=&quot;margin:3px 0&quot;&gt;&lt;span style=&quot;font-size:11px&quot;&gt;Web search for&lt;br&gt;legal precedents&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;align=center;verticalAlign=top;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="590" width="230" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- DATA FLOW ARROWS                                             -->
+        <!-- ============================================================ -->
+
+        <!-- Nginx → Frontend -->
+        <mxCell id="a-nginx-fe" value="HTTP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3A7BD5;fontColor=#3A7BD5;fontSize=10;labelBackgroundColor=#FFFFFF;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.2;exitY=1;exitDx=0;exitDy=0;" edge="1" source="nginx" target="fe-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Nginx → Backend -->
+        <mxCell id="a-nginx-be" value="HTTP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#27AE60;fontColor=#27AE60;fontSize=10;labelBackgroundColor=#FFFFFF;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="nginx" target="be-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Nginx → Orchestrator -->
+        <mxCell id="a-nginx-orch" value="HTTP / WebSocket" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#27AE60;fontColor=#27AE60;fontSize=10;labelBackgroundColor=#FFFFFF;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.8;exitY=1;exitDx=0;exitDy=0;" edge="1" source="nginx" target="orch-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Backend → Orchestrator (A2A / MCP) -->
+        <mxCell id="a-be-orch" value="A2A / MCP (HTTP)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#27AE60;fontColor=#27AE60;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="be-group" target="orch-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Backend → LangGraph -->
+        <mxCell id="a-be-lang" value="Internal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E67E22;fontColor=#E67E22;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" edge="1" source="be-group" target="ai-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Backend → Celery Worker -->
+        <mxCell id="a-be-celery" value="Celery Tasks" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#999999;fontColor=#666666;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="be-group" target="celery-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Orchestrator → DeepEval -->
+        <mxCell id="a-orch-eval" value="Evaluation" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E67E22;fontColor=#E67E22;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;" edge="1" source="orch-group" target="ai-group" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Backend → PostgreSQL -->
+        <mxCell id="a-be-pg" value="SQL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E57C2;fontColor=#7E57C2;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="backend" target="postgres" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="1010" />
+              <mxPoint x="200" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Backend → Redis -->
+        <mxCell id="a-be-redis" value="Redis Protocol" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E57C2;fontColor=#7E57C2;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="backend" target="redis" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="1010" />
+              <mxPoint x="540" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Backend → ChromaDB -->
+        <mxCell id="a-be-chroma" value="HTTP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E57C2;fontColor=#7E57C2;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="backend" target="chromadb" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="800" y="1010" />
+              <mxPoint x="880" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Orchestrator → Redis -->
+        <mxCell id="a-orch-redis" value="Redis Pub/Sub" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E57C2;fontColor=#7E57C2;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" source="orchestrator" target="redis" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1200" y="1010" />
+              <mxPoint x="590" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Celery → Redis (broker) -->
+        <mxCell id="a-celery-redis" value="Celery Broker" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E57C2;fontColor=#7E57C2;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" source="celery-group" target="redis" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="230" y="1010" />
+              <mxPoint x="490" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Celery → PostgreSQL -->
+        <mxCell id="a-celery-pg" value="SQL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7E57C2;fontColor=#7E57C2;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" source="celery-group" target="postgres" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="125" y="1010" />
+              <mxPoint x="150" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Backend → OpenAI -->
+        <mxCell id="a-be-openai" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E67E22;fontColor=#E67E22;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="be-group" target="openai" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="940" y="517" />
+              <mxPoint x="940" y="420" />
+              <mxPoint x="1470" y="420" />
+              <mxPoint x="1470" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Backend → Tavily -->
+        <mxCell id="a-be-tavily" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E67E22;fontColor=#E67E22;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="be-group" target="tavily" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="633" />
+              <mxPoint x="950" y="630" />
+              <mxPoint x="1470" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Orchestrator → OpenAI -->
+        <mxCell id="a-orch-openai" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E67E22;fontColor=#E67E22;fontSize=10;labelBackgroundColor=#FFFFFF;dashed=1;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="orch-group" target="openai" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="517" />
+              <mxPoint x="1440" y="455" />
+              <mxPoint x="1615" y="455" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ============================================================ -->
+        <!-- LEGEND                                                       -->
+        <!-- ============================================================ -->
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#CCCCCC;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="1480" y="770" width="270" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="Legend" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="780" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-blue" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8FF;strokeColor=#3A7BD5;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="810" width="24" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-blue-t" value="Frontend" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="808" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-green" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5F5E3;strokeColor=#27AE60;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="836" width="24" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-green-t" value="Backend / API" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="834" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-orange" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E67E22;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="862" width="24" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-orange-t" value="AI / ML" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="860" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-purple" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1C4E9;strokeColor=#7E57C2;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="888" width="24" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-purple-t" value="Data Stores" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="886" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-gray" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6E6E6;strokeColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="914" width="24" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-gray-t" value="Infrastructure" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="912" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-dashed" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="940" width="24" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-dashed-t" value="External Service" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="938" width="110" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
