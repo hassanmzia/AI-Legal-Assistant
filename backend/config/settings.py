@@ -14,7 +14,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-change-me-in-p
 
 DEBUG = os.environ.get('DJANGO_DEBUG', os.environ.get('DEBUG', 'False')).lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0')).split(',')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0,172.168.1.95')).split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -181,7 +181,7 @@ SIMPLE_JWT = {
 # CORS Settings
 CORS_ALLOWED_ORIGINS = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:3048,http://localhost:3062,http://localhost:5173,http://localhost:8052,http://127.0.0.1:3048,http://127.0.0.1:3062'
+    'http://localhost:3048,http://localhost:3062,http://localhost:8052,http://127.0.0.1:3048,http://172.168.1.95:3048,http://172.168.1.95:3062,http://172.168.1.95:8052'
 ).split(',')
 CORS_ALLOW_CREDENTIALS = True
 

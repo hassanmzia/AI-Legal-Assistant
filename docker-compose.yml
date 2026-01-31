@@ -183,8 +183,8 @@ services:
     ports:
       - "3062:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:8052
-      - REACT_APP_ORCHESTRATOR_URL=http://localhost:3057
+      - REACT_APP_API_URL=http://172.168.1.95:8052
+      - REACT_APP_ORCHESTRATOR_URL=http://172.168.1.95:3057
     depends_on:
       backend:
         condition: service_started
