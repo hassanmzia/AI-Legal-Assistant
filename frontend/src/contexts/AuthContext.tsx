@@ -11,6 +11,7 @@ interface AuthContextType {
     username: string;
     email: string;
     password: string;
+    password_confirm: string;
     first_name: string;
     last_name: string;
     role: string;
@@ -53,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     username: string;
     email: string;
     password: string;
+    password_confirm: string;
     first_name: string;
     last_name: string;
     role: string;
