@@ -11,6 +11,23 @@ class IsServiceRequest(BasePermission):
         return bool(service_key and expected_key and service_key == expected_key)
 
 
+class IsAttorneyOrService(BasePermission):
+    """Allow attorney/admin users OR internal service requests."""
+
+    def has_permission(self, request, view):
+        # Check service key first
+        service_key = request.headers.get('X-Service-Key', '')
+        expected_key = os.environ.get('SERVICE_API_KEY', '')
+        if service_key and expected_key and service_key == expected_key:
+            return True
+        # Fall back to user auth
+        return (
+            request.user
+            and request.user.is_authenticated
+            and request.user.role in ('admin', 'attorney')
+        )
+
+
 class IsAdmin(BasePermission):
     """Only allow admin users."""
 

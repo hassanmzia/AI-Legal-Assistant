@@ -19,7 +19,7 @@ from .serializers import (
     AnalysisResultSerializer, AnalysisRequestSerializer,
     CaseTimelineSerializer, BillingEntrySerializer, AuditLogSerializer,
 )
-from .permissions import IsAdmin, IsAttorneyOrAbove, IsParalegalOrAbove, IsOwnerOrAdmin, IsServiceRequest
+from .permissions import IsAdmin, IsAttorneyOrAbove, IsParalegalOrAbove, IsOwnerOrAdmin, IsServiceRequest, IsAttorneyOrService
 from .filters import (
     CaseFilter, DocumentFilter, AnalysisResultFilter,
     BillingEntryFilter, AuditLogFilter,
@@ -461,7 +461,7 @@ class AnalysisViewSet(viewsets.ModelViewSet):
         if self.action in ('list', 'retrieve'):
             return [IsParalegalOrAbove()]
         if self.action == 'create':
-            return [IsAttorneyOrAbove() | IsServiceRequest()]
+            return [IsAttorneyOrService()]
         return [IsAttorneyOrAbove()]
 
     def create(self, request):
