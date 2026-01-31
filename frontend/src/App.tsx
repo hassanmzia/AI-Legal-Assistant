@@ -11,6 +11,10 @@ import ChatInterface from './components/chat/ChatInterface';
 import AnalysisHistory from './components/analysis/AnalysisHistory';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AgentsPage from './components/agents/AgentsPage';
+import ClientsPage from './components/clients/ClientsPage';
+import BillingPage from './components/billing/BillingPage';
+import SettingsPage from './components/settings/SettingsPage';
 import LoadingSpinner from './components/common/LoadingSpinner';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -30,19 +34,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
   return <Layout>{children}</Layout>;
 };
-
-const PlaceholderPage: React.FC<{ title: string; description: string }> = ({
-  title,
-  description,
-}) => (
-  <div className="space-y-4">
-    <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-    <p className="text-gray-500">{description}</p>
-    <div className="card">
-      <p className="text-gray-400 text-center py-12">This page is under development.</p>
-    </div>
-  </div>
-);
 
 const App: React.FC = () => {
   return (
@@ -128,7 +119,7 @@ const App: React.FC = () => {
         path="/agents"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="AI Agents" description="View and manage AI agents in the system." />
+            <AgentsPage />
           </ProtectedRoute>
         }
       />
@@ -136,7 +127,7 @@ const App: React.FC = () => {
         path="/clients"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="Clients" description="Manage your clients and their information." />
+            <ClientsPage />
           </ProtectedRoute>
         }
       />
@@ -144,7 +135,7 @@ const App: React.FC = () => {
         path="/billing"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="Billing" description="Track time entries and generate invoices." />
+            <BillingPage />
           </ProtectedRoute>
         }
       />
@@ -152,7 +143,7 @@ const App: React.FC = () => {
         path="/settings"
         element={
           <ProtectedRoute>
-            <PlaceholderPage title="Settings" description="Configure your account and application preferences." />
+            <SettingsPage />
           </ProtectedRoute>
         }
       />
