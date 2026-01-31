@@ -56,7 +56,7 @@ export const casesService = {
   },
 
   async analyze(caseId: string, analysisType: string): Promise<any> {
-    const response = await api.post(`/cases/${caseId}/analyze/`, { analysis_type: analysisType });
+    const response = await api.post(`/cases/${caseId}/run_analysis/`, { analysis_type: analysisType });
     return response.data;
   },
 };
