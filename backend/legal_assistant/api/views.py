@@ -87,6 +87,8 @@ class UserViewSet(viewsets.ModelViewSet):
     ordering_fields = ['username', 'date_joined', 'role']
 
     def get_permissions(self):
+        if self.action == 'me':
+            return [permissions.IsAuthenticated()]
         if self.action in ('list', 'retrieve'):
             return [IsParalegalOrAbove()]
         return [IsAdmin()]
