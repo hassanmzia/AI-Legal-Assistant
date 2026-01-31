@@ -19,7 +19,7 @@ from .serializers import (
     AnalysisResultSerializer, AnalysisRequestSerializer,
     CaseTimelineSerializer, BillingEntrySerializer, AuditLogSerializer,
 )
-from .permissions import IsAdmin, IsAttorneyOrAbove, IsParalegalOrAbove, IsOwnerOrAdmin
+from .permissions import IsAdmin, IsAttorneyOrAbove, IsParalegalOrAbove, IsOwnerOrAdmin, IsServiceRequest
 from .filters import (
     CaseFilter, DocumentFilter, AnalysisResultFilter,
     BillingEntryFilter, AuditLogFilter,
@@ -460,29 +460,31 @@ class AnalysisViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ('list', 'retrieve'):
             return [IsParalegalOrAbove()]
+        if self.action == 'create':
+            return [IsAttorneyOrAbove() | IsServiceRequest()]
         return [IsAttorneyOrAbove()]
 
     def create(self, request):
-        """Trigger a new AI analysis for a case."""
-        req_serializer = AnalysisRequestSerializer(data=request.data)
-        req_serializer.is_valid(raise_exception=True)
+        """Trigger a new AI analysis. Accepts either case_id or input_text directly."""
+        analysis_type = request.data.get('analysis_type', 'full_analysis')
+        case_id = request.data.get('case_id')
+        input_text = request.data.get('input_text', '')
 
-        case_id = req_serializer.validated_data['case_id']
-        analysis_type = req_serializer.validated_data['analysis_type']
-        custom_text = req_serializer.validated_data.get('custom_text', '')
+        case = None
+        if case_id:
+            try:
+                case = Case.objects.get(id=case_id)
+            except Case.DoesNotExist:
+                return Response(
+                    {"error": "Case not found."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            if not input_text:
+                input_text = case.case_text
 
-        try:
-            case = Case.objects.get(id=case_id)
-        except Case.DoesNotExist:
-            return Response(
-                {"error": "Case not found."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        input_text = custom_text if custom_text else case.case_text
         if not input_text:
             return Response(
-                {"error": "No text available for analysis. Provide custom_text or add case_text."},
+                {"error": "No text available for analysis. Provide input_text or a case_id with case_text."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -491,6 +493,8 @@ class AnalysisViewSet(viewsets.ModelViewSet):
 
         from ..agents.evaluation import run_full_evaluation
         eval_result = run_full_evaluation(result['analysis'], result['tools_used'])
+
+        created_by = request.user if request.user.is_authenticated else None
 
         analysis = AnalysisResult.objects.create(
             case=case,
@@ -501,17 +505,19 @@ class AnalysisViewSet(viewsets.ModelViewSet):
             tools_used=result['tools_used'],
             evaluation_scores=eval_result,
             processing_time=result['processing_time'],
-            created_by=request.user,
+            created_by=created_by,
         )
 
-        case.ai_analysis = {"latest": str(analysis.id), "type": analysis_type}
-        case.save()
+        if case:
+            case.ai_analysis = {"latest": str(analysis.id), "type": analysis_type}
+            case.save()
 
-        log_audit(
-            request.user, 'create_analysis', 'analysis', analysis.id,
-            {'case_id': str(case_id), 'analysis_type': analysis_type},
-            request,
-        )
+        if request.user.is_authenticated:
+            log_audit(
+                request.user, 'create_analysis', 'analysis', analysis.id,
+                {'case_id': str(case_id) if case_id else None, 'analysis_type': analysis_type},
+                request,
+            )
 
         return Response(
             AnalysisResultSerializer(analysis).data,

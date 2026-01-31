@@ -76,11 +76,14 @@ export class SupervisorAgent {
         if (caseId) {
           payload.case_id = caseId;
         } else {
-          payload.case_text = caseText;
+          payload.input_text = caseText;
         }
 
+        const serviceKey = process.env.SERVICE_API_KEY || 'legal-assistant-internal-service-key-2024';
         logger.info(`Supervisor delegating to agent: ${agentId}`);
-        const response = await axios.post(`${BACKEND_URL}/api/analyses/`, payload);
+        const response = await axios.post(`${BACKEND_URL}/api/analyses/`, payload, {
+          headers: { 'X-Service-Key': serviceKey },
+        });
         results[agentId] = response.data;
 
         // Collect tools used
