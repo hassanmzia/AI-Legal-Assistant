@@ -8,7 +8,7 @@ export const authService = {
 
     localStorage.setItem('auth_tokens', JSON.stringify(tokens));
 
-    const userResponse = await api.get('/auth/me/');
+    const userResponse = await api.get('/users/me/');
     const user: User = userResponse.data;
 
     localStorage.setItem('user', JSON.stringify(user));
@@ -20,6 +20,7 @@ export const authService = {
     username: string;
     email: string;
     password: string;
+    password_confirm: string;
     first_name: string;
     last_name: string;
     role: string;
@@ -34,7 +35,7 @@ export const authService = {
   },
 
   async getCurrentUser(): Promise<User> {
-    const response = await api.get('/auth/me/');
+    const response = await api.get('/users/me/');
     return response.data;
   },
 
