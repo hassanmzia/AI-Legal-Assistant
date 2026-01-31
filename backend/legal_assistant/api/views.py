@@ -505,7 +505,7 @@ class AnalysisViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.warning(f"Evaluation failed (non-fatal): {e}")
 
-        created_by = request.user if request.user.is_authenticated else None
+        created_by = request.user if (request.user.is_authenticated and request.user.pk) else None
 
         analysis = AnalysisResult.objects.create(
             case=case,
@@ -523,7 +523,7 @@ class AnalysisViewSet(viewsets.ModelViewSet):
             case.ai_analysis = {"latest": str(analysis.id), "type": analysis_type}
             case.save()
 
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and request.user.pk:
             log_audit(
                 request.user, 'create_analysis', 'analysis', analysis.id,
                 {'case_id': str(case_id) if case_id else None, 'analysis_type': analysis_type},
