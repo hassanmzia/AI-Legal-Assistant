@@ -61,8 +61,8 @@ const AgentsPage: React.FC = () => {
     try {
       const response = await orchestratorApi.post('/a2a/tasks', {
         agentId: selectedAgent.id,
-        type: 'test',
-        input: taskInput.trim(),
+        type: selectedAgent.capabilities[0] || 'full_analysis',
+        input: { text: taskInput.trim(), caseText: taskInput.trim() },
       });
       const taskId = response.data.id || response.data.taskId;
       if (taskId) {

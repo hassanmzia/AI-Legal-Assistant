@@ -80,7 +80,7 @@ export class SupervisorAgent {
         }
 
         logger.info(`Supervisor delegating to agent: ${agentId}`);
-        const response = await axios.post(`${BACKEND_URL}/api/analysis/`, payload);
+        const response = await axios.post(`${BACKEND_URL}/api/analyses/`, payload);
         results[agentId] = response.data;
 
         // Collect tools used

@@ -23,6 +23,9 @@ const PORT = parseInt(process.env.PORT || '3001', 10);
 const app = express();
 const server = createServer(app);
 
+// Trust proxy (behind nginx)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
 app.use(cors({
