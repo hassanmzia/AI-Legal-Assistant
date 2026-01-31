@@ -11,7 +11,7 @@ import {
   FiDollarSign,
   FiSettings,
   FiLogOut,
-  FiScale,
+  FiShield,
 } from 'react-icons/fi';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -37,7 +37,7 @@ const Sidebar: React.FC = () => {
     <aside className="fixed left-0 top-0 h-full w-64 bg-primary-900 text-white flex flex-col z-40">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-5 border-b border-primary-800">
-        <FiScale className="text-primary-300" size={28} />
+        <FiShield className="text-primary-300" size={28} />
         <div>
           <h1 className="text-lg font-bold tracking-tight">Legal AI</h1>
           <p className="text-xs text-primary-400">Assistant</p>
