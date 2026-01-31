@@ -45,7 +45,7 @@ export const documentsService = {
     const params = new URLSearchParams({ query });
     if (caseId) params.append('case_id', caseId);
 
-    const response = await api.get(`/documents/search/?${params.toString()}`);
+    const response = await api.get(`/rag/search/?${params.toString()}`);
     return response.data;
   },
 };

@@ -25,7 +25,7 @@ const DashboardPage: React.FC = () => {
   const { data: stats, isLoading } = useFetch<DashboardStats>(
     'dashboard-stats',
     async () => {
-      const response = await api.get('/dashboard/stats/');
+      const response = await api.get('/dashboard/');
       return response.data;
     },
     { retry: false }

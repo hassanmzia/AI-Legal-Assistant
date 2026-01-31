@@ -12,12 +12,12 @@ export const analysisService = {
     if (params.analysis_type) searchParams.append('analysis_type', params.analysis_type);
     if (params.page) searchParams.append('page', String(params.page));
 
-    const response = await api.get(`/analysis/?${searchParams.toString()}`);
+    const response = await api.get(`/analyses/?${searchParams.toString()}`);
     return response.data;
   },
 
   async get(id: string): Promise<AnalysisResult> {
-    const response = await api.get(`/analysis/${id}/`);
+    const response = await api.get(`/analyses/${id}/`);
     return response.data;
   },
 
@@ -26,12 +26,12 @@ export const analysisService = {
     analysis_type: string;
     input_text?: string;
   }): Promise<AnalysisResult> {
-    const response = await api.post('/analysis/', data);
+    const response = await api.post('/analyses/', data);
     return response.data;
   },
 
   async getEvaluation(id: string): Promise<any> {
-    const response = await api.get(`/analysis/${id}/evaluation/`);
+    const response = await api.post(`/analyses/${id}/evaluate/`);
     return response.data;
   },
 };
