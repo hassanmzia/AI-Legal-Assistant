@@ -19,7 +19,7 @@ from .serializers import (
     AnalysisResultSerializer, AnalysisRequestSerializer,
     CaseTimelineSerializer, BillingEntrySerializer, AuditLogSerializer,
 )
-from .permissions import IsAdmin, IsAttorneyOrAbove, IsParalegalOrAbove, IsOwnerOrAdmin, IsServiceRequest
+from .permissions import IsAdmin, IsAttorneyOrAbove, IsParalegalOrAbove, IsOwnerOrAdmin, IsServiceRequest, IsAttorneyOrService
 from .filters import (
     CaseFilter, DocumentFilter, AnalysisResultFilter,
     BillingEntryFilter, AuditLogFilter,
@@ -461,7 +461,7 @@ class AnalysisViewSet(viewsets.ModelViewSet):
         if self.action in ('list', 'retrieve'):
             return [IsParalegalOrAbove()]
         if self.action == 'create':
-            return [IsAttorneyOrAbove() | IsServiceRequest()]
+            return [IsAttorneyOrService()]
         return [IsAttorneyOrAbove()]
 
     def create(self, request):
@@ -488,11 +488,22 @@ class AnalysisViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        from ..agents.graph import run_analysis
-        result = run_analysis(case_text=input_text, analysis_type=analysis_type)
+        try:
+            from ..agents.graph import run_analysis
+            result = run_analysis(case_text=input_text, analysis_type=analysis_type)
+        except Exception as e:
+            logger.error(f"Agent analysis error: {e}")
+            return Response(
+                {"error": f"Analysis failed: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
-        from ..agents.evaluation import run_full_evaluation
-        eval_result = run_full_evaluation(result['analysis'], result['tools_used'])
+        eval_result = {}
+        try:
+            from ..agents.evaluation import run_full_evaluation
+            eval_result = run_full_evaluation(result['analysis'], result['tools_used'])
+        except Exception as e:
+            logger.warning(f"Evaluation failed (non-fatal): {e}")
 
         created_by = request.user if request.user.is_authenticated else None
 
