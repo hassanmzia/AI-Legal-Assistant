@@ -197,10 +197,13 @@ export class A2AServer {
 
       logger.info(`Processing task ${task.id} with agent ${agent.name}`);
 
+      const serviceKey = process.env.SERVICE_API_KEY || 'legal-assistant-internal-service-key-2024';
       const response = await axios.post(`${BACKEND_URL}/api/analyses/`, {
         case_id: task.input.caseId,
         analysis_type: task.type || 'full_analysis',
         input_text: task.input.caseText || task.input.text || task.input,
+      }, {
+        headers: { 'X-Service-Key': serviceKey },
       });
 
       task.result = response.data;
@@ -234,10 +237,13 @@ export class A2AServer {
         if (caseId) {
           payload.case_id = caseId;
         } else {
-          payload.case_text = caseText;
+          payload.input_text = caseText;
         }
 
-        const response = await axios.post(`${BACKEND_URL}/api/analyses/`, payload);
+        const serviceKey = process.env.SERVICE_API_KEY || 'legal-assistant-internal-service-key-2024';
+        const response = await axios.post(`${BACKEND_URL}/api/analyses/`, payload, {
+          headers: { 'X-Service-Key': serviceKey },
+        });
         results[type] = response.data;
       } catch (error: any) {
         logger.error(`Analysis type ${type} failed`, error);

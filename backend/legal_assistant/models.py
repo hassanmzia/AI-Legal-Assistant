@@ -204,7 +204,7 @@ class AnalysisResult(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    case = models.ForeignKey(Case, on_delete=models.CASCADE, related_name='analyses')
+    case = models.ForeignKey(Case, on_delete=models.CASCADE, related_name='analyses', null=True, blank=True)
     analysis_type = models.CharField(max_length=30, choices=ANALYSIS_TYPES)
     input_text = models.TextField()
     result = models.JSONField(default=dict)
@@ -224,7 +224,8 @@ class AnalysisResult(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.analysis_type} for {self.case.case_number}"
+        case_ref = self.case.case_number if self.case else 'ad-hoc'
+        return f"{self.analysis_type} for {case_ref}"
 
 
 class CaseTimeline(models.Model):

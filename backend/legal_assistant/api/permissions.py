@@ -1,4 +1,14 @@
+import os
 from rest_framework.permissions import BasePermission
+
+
+class IsServiceRequest(BasePermission):
+    """Allow internal service-to-service requests using a shared API key."""
+
+    def has_permission(self, request, view):
+        service_key = request.headers.get('X-Service-Key', '')
+        expected_key = os.environ.get('SERVICE_API_KEY', '')
+        return bool(service_key and expected_key and service_key == expected_key)
 
 
 class IsAdmin(BasePermission):
