@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiScale, FiMail, FiLock } from 'react-icons/fi';
+import { FiShield, FiMail, FiLock } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-10 rounded-2xl mb-4">
-            <FiScale className="text-white" size={32} />
+            <FiShield className="text-white" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-white">AI Legal Assistant</h1>
           <p className="text-primary-300 mt-2">Sign in to your account</p>
