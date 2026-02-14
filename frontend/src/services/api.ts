@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const DJANGO_API_URL = process.env.REACT_APP_API_URL || 'http://172.168.1.95:3048/api';
-const ORCHESTRATOR_URL = process.env.REACT_APP_ORCHESTRATOR_URL || 'http://172.168.1.95:3048/orchestrator/api';
+const DJANGO_API_URL = process.env.REACT_APP_API_URL || '/api';
+const ORCHESTRATOR_URL = process.env.REACT_APP_ORCHESTRATOR_URL || '/orchestrator/api';
 
 export const api = axios.create({
   baseURL: DJANGO_API_URL,
