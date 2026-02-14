@@ -104,7 +104,7 @@ A professional-grade, multi-agent AI legal analysis platform built with MCP (Mod
                     |               |       |                 |
            +--------v--------+ +----v------+---+ +-----------v----------+
            | Django Backend   | | React Frontend | | Node.js Orchestrator |
-           | (Port 8052:8000) | | (Port 3062:80) | | (Port 3057:3001)     |
+           | (Port 8052:8000) | | (Port 3164:80) | | (Port 3057:3001)     |
            +--+----+----+----+ +----------------+ +----+--------+--------+
               |    |    |                              |        |
               |    |    |         +---------+          |   WebSocket
@@ -395,7 +395,7 @@ All services use non-default ports to avoid conflicts:
 | Service | Internal Port | External Port | Description |
 |---------|--------------|---------------|-------------|
 | **Nginx** | 80 | **3048** | Main entry point (reverse proxy) |
-| **Frontend** | 80 | 3062 | React SPA (served by Nginx) |
+| **Frontend** | 80 | 3164 | React SPA (served by Nginx) |
 | **Backend** | 8000 | 8052 | Django REST API |
 | **Orchestrator** | 3001 | 3057 | Node.js MCP + A2A server |
 | **PostgreSQL** | 5432 | 5488 | Primary database |
